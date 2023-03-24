@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
  */
 
-package dam2.m06uf3pracmg;
+package presentacio;
 
 /**
  *
@@ -13,5 +13,6 @@ public class M06UF3PracMG {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
+        System.out.println("Hello");
     }
 }
