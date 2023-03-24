@@ -19,7 +19,7 @@ public class M06UF3PracMG {
         int opcioClase = 0;
         String rutaLocal = "";
         String rutaRemota = "";
-        
+
         do {
             System.out.println(" \n"
                     + "**********************\n"
@@ -38,7 +38,7 @@ public class M06UF3PracMG {
 
             switch (opcio) {
                 case 1:
-                    
+
                     do {
                         // Demanem al usuari la classe i la cantitat que vol generar
                         System.out.print(" \n"
@@ -53,19 +53,26 @@ public class M06UF3PracMG {
                                 + "5. Compare sense detall\n"
                                 + "6. Compare amb detall\n"
                                 + "7. Enrere\n"
-                                + "---------------------\n");  
-                        
+                                + "---------------------\n");
+
                         opcioClase = scanner.nextInt();
-                    
-                    
+
                         switch (opcioClase) {
                             case 1:
                                 System.out.println("hola");
                                 break;
 
                             case 2:
-                                System.out.println("hola");
-                                break;
+                                System.out.println("-----------------------------------------------------");
+                                System.out.println("Se ha selecionat Drop");
+                                System.out.println("-----------------------------------------------------");
+
+                                System.out.println("Introdueix la ruta del fixer o directori Remot: ");
+                                rutaRemota = scanner.next();
+                                System.out.println("-----------------------------------------------------");
+
+                                System.out.println("S'ha borrat amb exit");
+                                System.out.println("-----------------------------------------------------");
 
                             case 3:
                                 System.out.println("hola");
@@ -79,15 +86,15 @@ public class M06UF3PracMG {
                                 System.out.println("-----------------------------------------------------");
                                 System.out.println("Se ha selecionado la opcion de 'Compare sense detall'");
                                 System.out.println("-----------------------------------------------------");
-                                
+
                                 System.out.println("-----------------------------------------------------");
                                 System.out.println("Introdueix la ruta del fixer o directori local: ");
                                 rutaLocal = scanner.next();
-                                
+
                                 System.out.println("Introdueix la ruta del fixer o directori Remot: ");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-                                
+
                                 System.out.println("-----------------------------------------------------");
                                 System.out.println("Aquí es es mostrarà el resultat.");
                                 System.out.println("-----------------------------------------------------");
@@ -97,20 +104,20 @@ public class M06UF3PracMG {
                                 System.out.println("-----------------------------------------------------");
                                 System.out.println("Se ha selecionado la opcion de 'Compare amb detall'");
                                 System.out.println("-----------------------------------------------------");
-                                
+
                                 System.out.println("-----------------------------------------------------");
                                 System.out.println("Introdueix la ruta del fixer o directori local: ");
                                 rutaLocal = scanner.next();
-                                
+
                                 System.out.println("Introdueix la ruta del fixer o directori Remot: ");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-                                
+
                                 System.out.println("-----------------------------------------------------");
                                 System.out.println("Aquí es es mostrarà el resultat.");
                                 System.out.println("-----------------------------------------------------");
                                 break;
-                                
+
                             case 7:
                                 break;
 
@@ -118,21 +125,28 @@ public class M06UF3PracMG {
                                 opcioClase = 0;
                                 System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
                         }
-                        
+
                     } while (opcioClase != 7);
-                        
-                    break;    
-                    
+
+                    break;
+
                 case 2:
-                    System.out.println("Se ha selecionado la opcion de clonar"); 
-                    //continuar con el diseño...
-                    break; 
+                    System.out.println("-----------------------------------------------------");
+                    System.out.println("Se ha selecionado la opcion de clonar");
+                    System.out.println("-----------------------------------------------------");
+
+                    System.out.println("Introdueix la ruta del fixer o directori Remot: ");
+                    rutaRemota = scanner.next();
+                    System.out.println("-----------------------------------------------------");
+
+                    System.out.println("S'ha clonat amb exit");
+                    System.out.println("-----------------------------------------------------");
+                    break;
                 case 3:
-                
-                System.exit(0);
+
+                    System.exit(0);
             }
-            
-            
+
         } while (opcio != 3);
     }
 }
