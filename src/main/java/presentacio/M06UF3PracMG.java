@@ -17,6 +17,7 @@ public class M06UF3PracMG {
         Scanner scanner = new Scanner(System.in);
         int opcio = 0;
         int opcioClase = 0;
+        int valor = 0;
         
         do {
             System.out.println("Selecciona una opció:\n"
@@ -27,27 +28,68 @@ public class M06UF3PracMG {
 
             switch (opcio) {
                 case 1:
+                    
+                    do {
                         // Demanem al usuari la classe i la cantitat que vol generar
                         System.out.print("Selecciona una opció: \n"
                                 + "1. Create\n"
                                 + "2. Drop\n"
                                 + "3. Push\n"
                                 + "4. Pull\n"
-                                + "5. Compare\n"
-                                + "6. Endarrere\n");
+                                + "5. Compare sense detall\n"
+                                + "6. Compare amb detall\n"
+                                + "7. Endarrere\n");
                         
                         opcioClase = scanner.nextInt();
+                    
+                    
+                        switch (opcioClase) {
+                            case 1:
+                                System.out.println("hola");
+                                break;
+
+                            case 2:
+                                System.out.println("hola");
+                                break;
+
+                            case 3:
+                                System.out.println("hola");
+                                break;
+
+                            case 4:
+                                System.out.println("hola");
+                                break;
+
+                            case 5:
+                                System.out.println("hola");
+                                break;
+
+                            case 6:
+                                System.out.println("hola");
+                                break;
+                                
+                            case 7:
+                                break;
+
+                            default:
+                                System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
+                                break;
+                        }
                         
+                        break;
+                    } while (valor > 7 || valor == 0);
+                        
+                    break;    
                     
                 case 2:
-                    
-                    
+                    System.out.println("Se ha selecionado la opcion de clonar"); 
+                    //continuar con el diseño...
                 case 3:
                 
                 System.exit(0);
             }
             
             
-        } while (opcio != 4);
+        } while (opcio != 3);
     }
 }
