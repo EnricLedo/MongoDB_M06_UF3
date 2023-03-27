@@ -59,8 +59,16 @@ public class M06UF3PracMG {
 
                         switch (opcioClase) {
                             case 1:
-                                System.out.println("hola");
-                                break;
+                                System.out.println("-----------------------------------------------------");
+                                System.out.println("S'ha selecionat Create");
+                                System.out.println("-----------------------------------------------------");
+
+                                System.out.println("Introdueix la ruta del fixer o directori a Crear: ");
+                                rutaRemota = scanner.next();
+                                System.out.println("-----------------------------------------------------");
+
+                                System.out.println("S'ha creat amb exit");
+                                System.out.println("-----------------------------------------------------");
 
                             case 2:
                                 System.out.println("-----------------------------------------------------");
@@ -75,12 +83,28 @@ public class M06UF3PracMG {
                                 System.out.println("-----------------------------------------------------");
 
                             case 3:
-                                System.out.println("hola");
-                                break;
+                                System.out.println("-----------------------------------------------------");
+                                System.out.println("S'ha selecionat Push");
+                                System.out.println("-----------------------------------------------------");
+
+                                System.out.println("Introdueix la ruta del fixer o directori Remot: ");
+                                rutaRemota = scanner.next();
+                                System.out.println("-----------------------------------------------------");
+
+                                System.out.println("S'ha pujat amb exit");
+                                System.out.println("-----------------------------------------------------");
 
                             case 4:
-                                System.out.println("hola");
-                                break;
+                                System.out.println("-----------------------------------------------------");
+                                System.out.println("S'ha selecionat Pull");
+                                System.out.println("-----------------------------------------------------");
+
+                                System.out.println("Introdueix la ruta del fixer o directori Remot: ");
+                                rutaRemota = scanner.next();
+                                System.out.println("-----------------------------------------------------");
+
+                                System.out.println("S'ha baixat amb exit");
+                                System.out.println("-----------------------------------------------------");
 
                             case 5:
                                 System.out.println("-----------------------------------------------------");
