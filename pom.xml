@@ -10,7 +10,6 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>3.12.12</version>
-            <type>jar</type>
         </dependency>
     </dependencies>
     <properties>
