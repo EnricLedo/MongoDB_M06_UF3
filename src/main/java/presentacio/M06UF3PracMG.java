@@ -5,6 +5,7 @@
 package presentacio;
 
 import java.util.Scanner;
+import static logica.DBConect.conexioMongoDB;
 
 /**
  *
@@ -19,6 +20,8 @@ public class M06UF3PracMG {
         int opcioClase = 0;
         String rutaLocal = "";
         String rutaRemota = "";
+        
+       conexioMongoDB();
 
         do {
             System.out.println(" \n"
