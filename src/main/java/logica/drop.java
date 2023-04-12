@@ -13,7 +13,4 @@ import com.mongodb.client.MongoDatabase;
  */
 public class drop {
     
-
-    
-    
 }
