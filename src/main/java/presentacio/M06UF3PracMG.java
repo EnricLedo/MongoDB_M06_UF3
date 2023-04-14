@@ -69,7 +69,7 @@ public class M06UF3PracMG {
                                 System.out.println("Introdueix la ruta del fixer o directori a Crear: ");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-
+                                
                                 System.out.println("S'ha creat amb exit");
                                 System.out.println("-----------------------------------------------------");
 
