@@ -5,6 +5,7 @@
 package logica;
 
 import entidad.Fichero;
+import java.time.ZoneId;
 import org.bson.Document;
 
 /**
@@ -14,14 +15,38 @@ import org.bson.Document;
 public class Mapeig {
     
     //De objecte a document
+    /***
+     * Passa una classe Fichero a document
+     * @param e
+     * @return 
+     */
+    
     public static Document mapToDocument(Fichero fi){
         
-        return null; 
+        Document ret = new Document("ruta", fi.getRuta())
+                .append("contenido", fi.getContenido())
+                .append("fechaCreacion", fi.getFechaCreacion())
+                .append("fechaModificacion", fi.getFechaModificacion())
+                .append("hashMD5", fi.getHashMD5());
+        return ret; 
     }
     
     //De document a objecte
+    /***
+     * Passa un document a classe Fichero
+     * @param d
+     * @return 
+     */
     public static Fichero mapFromDocument(Document d){
         
-        return null;
+        Fichero ret = new Fichero();
+        
+        ret.setRuta(d.getString("ruta"));
+        ret.setContenido(new StringBuilder(d.getString("contenido")));
+        ret.setFechaCreacion(d.getDate("fechaCreacion").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        ret.setFechaModificacion(d.getDate("fechaModificacion").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+        ret.setHashMD5(d.getString("hashMD5"));
+        
+        return ret;
     }
 }
