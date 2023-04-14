@@ -14,7 +14,7 @@ import java.util.Scanner;
  */
 public class DBConect {
 
-    public static void conexioMongoDB() {
+    public static MongoDatabase conexioMongoDB() {
 
         Scanner scanner = new Scanner(System.in);
         String nomBD;
@@ -23,14 +23,21 @@ public class DBConect {
         MongoClient mongoClient = new MongoClient("localhost", 27017);
 
         // Seleccionar la base de datos
+        try {
+            Thread.sleep(3000); // retrasa la ejecución por 3 segundos
+        } catch (InterruptedException e) {
+
+        }
         System.out.println("--------------------------------");
         System.out.println("Introdueix el nom de la BD:");
         System.out.println("--------------------------------");
-
         nomBD = scanner.nextLine();
 
-        MongoDatabase database = mongoClient.getDatabase("nomBD");
-        System.out.println("S'ha conectat amb la BD " + nomBD + " correctament!");
+        MongoDatabase database = mongoClient.getDatabase(nomBD);
+        System.out.println("\033[32m S'ha conectat amb la BD " + nomBD + " correctament!");
 
+        return database;
     }
+
+    // ...
 }
