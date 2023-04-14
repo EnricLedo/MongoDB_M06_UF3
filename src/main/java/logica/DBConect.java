@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 package logica;
 
 import com.mongodb.MongoClient;
@@ -34,10 +35,8 @@ public class DBConect {
         nomBD = scanner.nextLine();
 
         MongoDatabase database = mongoClient.getDatabase(nomBD);
-        System.out.println("\033[32m S'ha conectat amb la BD " + nomBD + " correctament!");
+        System.out.println("S'ha conectat amb la BD " + nomBD + " correctament!");
 
         return database;
     }
-
-    // ...
 }

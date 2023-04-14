@@ -81,7 +81,7 @@ public class M06UF3PracMG {
                                 //Eliminar repositori remot amb tots els seus documents, si no existeix s'informa a l'usuari
                                 
                                 System.out.println("-----------------------------------------------------");
-                                System.out.println("Se ha selecionat Drop");
+                                System.out.println("S'ha selecionat Drop");
                                 System.out.println("-----------------------------------------------------");
 
                                 System.out.println("Introdueix la ruta del repositori Remot: ");

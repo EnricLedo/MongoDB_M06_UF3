@@ -15,13 +15,13 @@ import org.bson.Document;
 public class Drop {
     public static void eliminarRepositori(MongoDatabase database, String ruta) {
 
-    MongoCollection<Document> collection = database.getCollection("ruta");
+    MongoCollection<Document> collection = database.getCollection(ruta);
 
     if (collection != null) {
         collection.drop();
-        System.out.println("La colección ha sido eliminada correctamente.");
+        System.out.println("La colecció "+ruta+" s'ha eliminat correctament");
     } else {
-        System.out.println("La colección no existe.");
+        System.out.println("La colecció no existeix.");
     }
 }
 
