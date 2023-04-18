@@ -6,6 +6,8 @@ package logica;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import java.util.ArrayList;
+import java.util.List;
 import org.bson.Document;
 
 /**
@@ -13,16 +15,20 @@ import org.bson.Document;
  * @author mengu
  */
 public class Drop {
+
     public static void eliminarRepositori(MongoDatabase database, String ruta) {
 
-    MongoCollection<Document> collection = database.getCollection(ruta);
+        List<String> collectionNames = new ArrayList<>();
+        for (String name : database.listCollectionNames()) {
+            collectionNames.add(name);
+        }
+        if (collectionNames.contains(ruta)) {
+            MongoCollection<Document> collection = database.getCollection(ruta);
 
-    if (collection != null) {
-        collection.drop();
-        System.out.println("La colecció "+ruta+" s'ha eliminat correctament");
-    } else {
-        System.out.println("La colecció no existeix.");
+            collection.drop();
+            System.out.println("La colecció " + ruta + " s'ha eliminat correctament");
+        } else {
+            System.out.println("La colecció no existeix.");
+        }
     }
-}
-
 }
