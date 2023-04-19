@@ -4,8 +4,11 @@
  */
 package presentacio;
 
+import com.mongodb.client.MongoDatabase;
 import java.util.Scanner;
+import static logica.Clone.clonarDirectoriRemot;
 import static logica.DBConect.conexioMongoDB;
+import static logica.Drop.eliminarRepositori;
 
 /**
  *
@@ -18,10 +21,11 @@ public class M06UF3PracMG {
         Scanner scanner = new Scanner(System.in);
         int opcio = 0;
         int opcioClase = 0;
+        String database;
         String rutaLocal = "";
         String rutaRemota = "";
-        
-       conexioMongoDB();
+
+        MongoDatabase nomBD = conexioMongoDB();
 
         do {
             System.out.println(" \n"
@@ -74,16 +78,20 @@ public class M06UF3PracMG {
                                 System.out.println("-----------------------------------------------------");
 
                             case 2:
+                                
+                                //Eliminar repositori remot amb tots els seus documents, si no existeix s'informa a l'usuari
+                                
                                 System.out.println("-----------------------------------------------------");
-                                System.out.println("Se ha selecionat Drop");
+                                System.out.println("S'ha selecionat Drop");
                                 System.out.println("-----------------------------------------------------");
 
-                                System.out.println("Introdueix la ruta del fixer o directori Remot: ");
+                                System.out.println("Introdueix la ruta del repositori Remot: ");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
 
-                                System.out.println("S'ha borrat amb exit");
-                                System.out.println("-----------------------------------------------------");
+                                eliminarRepositori(nomBD, rutaRemota);
+                                
+                                break;
 
                             case 3:
                                 System.out.println("-----------------------------------------------------");
@@ -162,12 +170,10 @@ public class M06UF3PracMG {
                     System.out.println("Se ha selecionado la opcion de clonar");
                     System.out.println("-----------------------------------------------------");
 
-                    System.out.println("Introdueix la ruta del fixer o directori Remot: ");
+                    System.out.println("Introdueix la ruta del directori remot: ");
                     rutaRemota = scanner.next();
-                    System.out.println("-----------------------------------------------------");
+                    clonarDirectoriRemot(rutaRemota, nomBD);
 
-                    System.out.println("S'ha clonat amb exit");
-                    System.out.println("-----------------------------------------------------");
                     break;
                 case 3:
 
