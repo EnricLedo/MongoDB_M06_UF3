@@ -5,9 +5,12 @@
 package presentacio;
 
 import com.mongodb.client.MongoDatabase;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 import static logica.DBConect.conexioMongoDB;
-import static logica.Drop.eliminarRepositori;
+import logica.Push;
+//import static logica.Drop.eliminarRepositori;
 
 /**
  *
@@ -24,8 +27,7 @@ public class M06UF3PracMG {
         String rutaLocal = "";
         String rutaRemota = "";
 
-        MongoDatabase nomBD = conexioMongoDB();
-
+        //MongoDatabase nomBD = conexioMongoDB();
         do {
             System.out.println(" \n"
                     + "**********************\n"
@@ -72,14 +74,13 @@ public class M06UF3PracMG {
                                 System.out.println("Introdueix la ruta del fixer o directori a Crear: ");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-                                
+
                                 System.out.println("S'ha creat amb exit");
                                 System.out.println("-----------------------------------------------------");
 
                             case 2:
-                                
+
                                 //Eliminar repositori remot amb tots els seus documents, si no existeix s'informa a l'usuari
-                                
                                 System.out.println("-----------------------------------------------------");
                                 System.out.println("S'ha selecionat Drop");
                                 System.out.println("-----------------------------------------------------");
@@ -88,8 +89,7 @@ public class M06UF3PracMG {
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
 
-                                eliminarRepositori(nomBD, rutaRemota);
-                                
+                                //eliminarRepositori(nomBD, rutaRemota);
                                 break;
 
                             case 3:
@@ -97,13 +97,49 @@ public class M06UF3PracMG {
                                 System.out.println("S'ha selecionat Push");
                                 System.out.println("-----------------------------------------------------");
 
-                                System.out.println("Introdueix la ruta del fixer o directori Remot: ");
+                                /*System.out.println("Introdueix la ruta del fixer o directori Remot: ");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
 
                                 System.out.println("S'ha pujat amb exit");
-                                System.out.println("-----------------------------------------------------");
+                                System.out.println("-----------------------------------------------------");*/
+                                do {
+                                    System.out.print("\n"
+                                            + "---------------------\n"
+                                            + "Selecciona una opció:\n"
+                                            + "---------------------\n"
+                                            + "---------------------\n"
+                                            + "1. Fer Push d'arxiu dintre del directori.\n"
+                                            + "2. Fer Push de tot el directori.\n"
+                                            + "---------------------\n");
 
+                                    opcioClase = scanner.nextInt();
+
+                                    String dirBase = scanner.next();
+                                    String fichero = "";
+
+                                    switch (opcioClase) {
+                                        case 1:
+                                            fichero = scanner.next();
+                                            break;
+                                        case 2:
+                                            break;
+                                    }
+
+                                    Push push = new Push(dirBase);
+
+                                    try {
+                                        Path filePath = Paths.get(dirBase, fichero);
+                                        System.out.println("¿Desea forzar el Push? Introduzca 'true' o 'false':");
+                                        boolean forzar = scanner.nextBoolean();
+                                        push.push(filePath, forzar);
+                                    } catch (Exception e) {
+                                        System.err.println("Error al hacer push del archivo: " + e.getMessage());
+                                    }
+                                    
+                                } while (opcioClase != 2);
+                                
+                                break;
                             case 4:
                                 System.out.println("-----------------------------------------------------");
                                 System.out.println("S'ha selecionat Pull");
@@ -115,6 +151,8 @@ public class M06UF3PracMG {
 
                                 System.out.println("S'ha baixat amb exit");
                                 System.out.println("-----------------------------------------------------");
+
+                                break;
 
                             case 5:
                                 System.out.println("-----------------------------------------------------");
@@ -183,4 +221,5 @@ public class M06UF3PracMG {
 
         } while (opcio != 3);
     }
+
 }
