@@ -5,10 +5,11 @@
 package presentacio;
 
 import com.mongodb.client.MongoDatabase;
+import java.io.IOException;
 import java.util.Scanner;
 import static logica.Clone.clonarDirectoriRemot;
 import static logica.DBConect.conexioMongoDB;
-import static logica.Drop.eliminarRepositori;
+import static logica.Pull.pull;
 
 /**
  *
@@ -16,7 +17,7 @@ import static logica.Drop.eliminarRepositori;
  */
 public class M06UF3PracMG {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         Scanner scanner = new Scanner(System.in);
         int opcio = 0;
@@ -89,7 +90,6 @@ public class M06UF3PracMG {
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
 
-                                eliminarRepositori(nomBD, rutaRemota);
                                 
                                 break;
 
@@ -113,7 +113,8 @@ public class M06UF3PracMG {
                                 System.out.println("Introdueix la ruta del fixer o directori Remot: ");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-
+                                
+                                pull(rutaRemota, true);
                                 System.out.println("S'ha baixat amb exit");
                                 System.out.println("-----------------------------------------------------");
 

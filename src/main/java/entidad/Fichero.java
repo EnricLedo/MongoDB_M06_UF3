@@ -12,21 +12,12 @@ import java.time.LocalDateTime;
  */
 public class Fichero {
     
-    private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
     private StringBuilder contenido;
     private String ruta;
     private String hashMD5;
 
     public Fichero() {
-    }
-
-     public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
     }
 
     public LocalDateTime getFechaModificacion() {

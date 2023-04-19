@@ -25,7 +25,6 @@ public class Mapeig {
         
         Document ret = new Document("ruta", fi.getRuta())
                 .append("contenido", fi.getContenido())
-                .append("fechaCreacion", fi.getFechaCreacion())
                 .append("fechaModificacion", fi.getFechaModificacion())
                 .append("hashMD5", fi.getHashMD5());
         return ret; 
@@ -43,7 +42,6 @@ public class Mapeig {
         
         ret.setRuta(d.getString("ruta"));
         ret.setContenido(new StringBuilder(d.getString("contenido")));
-        ret.setFechaCreacion(d.getDate("fechaCreacion").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
         ret.setFechaModificacion(d.getDate("fechaModificacion").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
         ret.setHashMD5(d.getString("hashMD5"));
         
