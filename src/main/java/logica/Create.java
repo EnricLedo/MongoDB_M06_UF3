@@ -28,10 +28,12 @@ public class Create {
             //Busquem tots els noms de documents que hi hagi per penjar-los
             Files.walk(Paths.get(ruta)).forEach(r-> {
                 if (Files.isRegularFile(r)) {
+                    //Per a cada fitxer he l'he de convertir a Document i pujar-lo
                     System.out.println(r);
                 }
             });
         }
+        
         
         try {
             String ruta = "/ruta/filename.txt";
