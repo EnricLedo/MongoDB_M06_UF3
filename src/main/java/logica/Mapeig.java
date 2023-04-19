@@ -17,7 +17,7 @@ public class Mapeig {
     //De objecte a document
     /***
      * Passa una classe Fichero a document
-     * @param e
+     * @param fi
      * @return 
      */
     
