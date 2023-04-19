@@ -5,6 +5,7 @@
 package presentacio;
 
 import java.util.Scanner;
+import static logica.DBConect.conexioMongoDB;
 
 /**
  *
@@ -19,6 +20,8 @@ public class M06UF3PracMG {
         int opcioClase = 0;
         String rutaLocal = "";
         String rutaRemota = "";
+        
+       conexioMongoDB();
 
         do {
             System.out.println(" \n"
@@ -66,7 +69,7 @@ public class M06UF3PracMG {
                                 System.out.println("Introdueix la ruta del fixer o directori a Crear: ");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-
+                                
                                 System.out.println("S'ha creat amb exit");
                                 System.out.println("-----------------------------------------------------");
 
