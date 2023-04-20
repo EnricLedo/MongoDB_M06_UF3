@@ -34,13 +34,15 @@ public class Push {
 
     public Push(String dirBase) {
         this.dirBase = dirBase;
-        MongoClientURI clientURI = new MongoClientURI("mongodb://localhost:27017");
-        MongoClient mongoClient = new MongoClient(clientURI);
+        MongoClient mongoClient = new MongoClient("localhost", 27017);
         MongoDatabase database = mongoClient.getDatabase("GETDB");
-        if (!database.listCollectionNames().into(new ArrayList<String>()).contains("ficheros")) {
-            database.createCollection("ficheros");
+        if (!database.listCollectionNames().into(new ArrayList<String>()).contains(dirBase)) {
+            database.createCollection(dirBase);
+            System.out.println("");
+            System.out.println("Se ha creado la coleccion " + dirBase + "en la base de datos GETBD.");
+            System.out.println("");
         }
-        this.collection = database.getCollection("ficheros");
+        this.collection = database.getCollection(dirBase);
     }
 
     public void push(Path filePath, boolean force) throws Exception {
@@ -77,7 +79,7 @@ public class Push {
             String linea;
             while ((linea = br.readLine()) != null) {
                 sb.append(linea);
-                sb.append(System.lineSeparator());
+                //sb.append(System.lineSeparator());
             }
         } catch (FileNotFoundException e) {
             System.err.println("Error al abrir el archivo " + file.getName() + ": " + e.getMessage());
@@ -86,7 +88,7 @@ public class Push {
         fichero.setContenido(sb.toString());
 
         fichero.setHashMD5(calcularHashMD5(file));
-        Document document = collection.find(new Document("ruta", rutaAbsoluta)).first();
+        Document document = collection.find(new Document("_id", rutaAbsoluta)).first();
         if (document == null) {
             Document d = Mapeig.mapToDocument(fichero);
             collection.insertOne(d);
@@ -94,10 +96,10 @@ public class Push {
         } else {
             Fichero ficheroRemoto = Mapeig.mapFromDocument(document);
             if(force == false && fichero.getFechaModificacion().isAfter(ficheroRemoto.getFechaModificacion())){
-                collection.replaceOne(new Document("ruta", rutaAbsoluta), Mapeig.mapToDocument(fichero));
+                collection.replaceOne(new Document("_id", rutaAbsoluta), Mapeig.mapToDocument(fichero));
                 System.out.println("Archivo actualizado en el repositorio: " + rutaAbsoluta);
             }else if (force == true || fichero.getFechaModificacion().isAfter(ficheroRemoto.getFechaModificacion())) {
-                collection.replaceOne(new Document("ruta", rutaAbsoluta), Mapeig.mapToDocument(fichero));
+                collection.replaceOne(new Document("_id", rutaAbsoluta), Mapeig.mapToDocument(fichero));
                 System.out.println("Archivo actualizado en el repositorio: " + rutaAbsoluta);
             } else if (fichero.getFechaModificacion().isEqual(ficheroRemoto.getFechaModificacion())) {
                 System.out.println("No se ha modificado, el archivo local tiene la misma fecha de modificación que el remoto: " + rutaAbsoluta);

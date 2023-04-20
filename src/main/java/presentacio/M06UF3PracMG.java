@@ -12,6 +12,8 @@ import static logica.Clone.clonarDirectoriRemot;
 import logica.Create;
 import static logica.DBConect.conexioMongoDB;
 import logica.Push;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import static logica.Drop.eliminarRepositori;
 
 /**
@@ -19,10 +21,11 @@ import logica.Push;
  * @author Taufik
  */
 public class M06UF3PracMG {
-
+    
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+        Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
         int opcio = 0;
         int opcioClase = 0;
         String database;
@@ -102,13 +105,6 @@ public class M06UF3PracMG {
                                 System.out.println("-----------------------------------------------------");
                                 System.out.println("S'ha selecionat Push");
                                 System.out.println("-----------------------------------------------------");
-
-                                /*System.out.println("Introdueix la ruta del fixer o directori Remot: ");
-                                rutaRemota = scanner.next();
-                                System.out.println("-----------------------------------------------------");
-
-                                System.out.println("S'ha pujat amb exit");
-                                System.out.println("-----------------------------------------------------");*/
                                 do {
                                     System.out.print("\n"
                                             + "---------------------\n"
@@ -120,12 +116,16 @@ public class M06UF3PracMG {
                                             + "---------------------\n");
 
                                     opcioClase = scanner.nextInt();
-
+                                    
+                                    System.out.println("");
+                                    System.out.println("Introduexi la ruta del directori local: ");
                                     String dirBase = scanner.next();
                                     String fichero = "";
 
                                     switch (opcioClase) {
                                         case 1:
+                                            System.out.println("");
+                                            System.out.println("Introduexi el nom del arxiu dintre del directori local: ");
                                             fichero = scanner.next();
                                             break;
                                         case 2:
@@ -136,6 +136,7 @@ public class M06UF3PracMG {
 
                                     try {
                                         Path filePath = Paths.get(dirBase, fichero);
+                                        System.out.println("");
                                         System.out.println("¿Desea forzar el Push? Introduzca 'true' o 'false':");
                                         boolean forzar = scanner.nextBoolean();
                                         push.push(filePath, forzar);
@@ -215,7 +216,7 @@ public class M06UF3PracMG {
 
                     System.out.println("Introdueix la ruta del directori remot: ");
                     rutaRemota = scanner.next();
-                    clonarDirectoriRemot(rutaRemota, nomBD);
+                    //clonarDirectoriRemot(rutaRemota, nomBD);
 
                     break;
                 case 3:
