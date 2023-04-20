@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * @author Taufik
  */
 public class M06UF3PracMG {
-
+    
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);

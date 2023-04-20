@@ -38,6 +38,9 @@ public class Push {
         MongoDatabase database = mongoClient.getDatabase("GETDB");
         if (!database.listCollectionNames().into(new ArrayList<String>()).contains(dirBase)) {
             database.createCollection(dirBase);
+            System.out.println("");
+            System.out.println("Se ha creado la coleccion " + dirBase + "en la base de datos GETBD.");
+            System.out.println("");
         }
         this.collection = database.getCollection(dirBase);
     }
