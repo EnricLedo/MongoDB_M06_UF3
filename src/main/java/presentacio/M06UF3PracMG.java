@@ -5,6 +5,7 @@
 package presentacio;
 
 import com.mongodb.client.MongoDatabase;
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -14,6 +15,7 @@ import static logica.DBConect.conexioMongoDB;
 import logica.Push;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import logica.Compare;
 //import static logica.Drop.eliminarRepositori;
 
 /**
@@ -21,7 +23,7 @@ import java.util.logging.Logger;
  * @author Taufik
  */
 public class M06UF3PracMG {
-    
+
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -31,6 +33,7 @@ public class M06UF3PracMG {
         String database;
         String rutaLocal = "";
         String rutaRemota = "";
+        boolean enrere = false;
 
         MongoDatabase nomBD = conexioMongoDB();
         do {
@@ -43,7 +46,7 @@ public class M06UF3PracMG {
                     + "Selecciona una opció:\n"
                     + "---------------------\n"
                     + "---------------------\n"
-                    + "1. Introduir Ruta\n"
+                    + "1. GET\n"
                     + "2. Clone\n"
                     + "3. Sortir\n"
                     + "---------------------\n");
@@ -80,10 +83,10 @@ public class M06UF3PracMG {
                                 System.out.println("Exemple: C:\\Users\\Enric\\OneDrive\\Desktop\\Nom_Del_Repo");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-                                
+
                                 Create creator = new Create();
                                 creator.crearRepositori(rutaRemota, nomBD);
-                                
+
                                 System.out.println("S'ha creat amb exit");
                                 System.out.println("-----------------------------------------------------");
 
@@ -113,13 +116,14 @@ public class M06UF3PracMG {
                                             + "---------------------\n"
                                             + "1. Fer Push d'arxiu dintre del directori.\n"
                                             + "2. Fer Push de tot el directori.\n"
+                                            + "3. Enrere.\n"
                                             + "---------------------\n");
 
                                     opcioClase = scanner.nextInt();
-                                    
+
                                     System.out.println("");
                                     System.out.println("Introduexi la ruta del directori local: ");
-                                    String dirBase = scanner.next();
+                                    String rutaBase = scanner.next();
                                     String fichero = "";
 
                                     switch (opcioClase) {
@@ -129,23 +133,27 @@ public class M06UF3PracMG {
                                             fichero = scanner.next();
                                             break;
                                         case 2:
+                                            break;   
+                                        default:
+                                            System.out.println("Opción no válida");
                                             break;
                                     }
 
-                                    Push push = new Push(dirBase);
+                                    Push push = new Push(rutaBase);
 
                                     try {
-                                        Path filePath = Paths.get(dirBase, fichero);
+                                        Path rutaCompleta = Paths.get(rutaBase, fichero);
                                         System.out.println("");
                                         System.out.println("¿Desea forzar el Push? Introduzca 'true' o 'false':");
                                         boolean forzar = scanner.nextBoolean();
-                                        push.push(filePath, forzar);
+                                        push.push(rutaCompleta, forzar);
                                     } catch (Exception e) {
-                                        System.err.println("Error al hacer push del archivo: " + e.getMessage());
+                                        System.err.println("Error al hacer push: " + e.getMessage());
                                     }
-                                    
-                                } while (opcioClase != 2);
-                                
+
+                                    break;
+                                } while (opcioClase != 3);
+
                                 break;
                             case 4:
                                 System.out.println("-----------------------------------------------------");
@@ -165,18 +173,47 @@ public class M06UF3PracMG {
                                 System.out.println("-----------------------------------------------------");
                                 System.out.println("Se ha selecionado la opcion de 'Compare sense detall'");
                                 System.out.println("-----------------------------------------------------");
+                                do {
+                                    System.out.print("\n"
+                                            + "---------------------\n"
+                                            + "Selecciona una opció:\n"
+                                            + "---------------------\n"
+                                            + "---------------------\n"
+                                            + "1. Comparar archivo.\n"
+                                            + "2. Comparar directorio.\n"
+                                            + "---------------------\n");
 
-                                System.out.println("-----------------------------------------------------");
-                                System.out.println("Introdueix la ruta del fixer o directori local: ");
-                                rutaLocal = scanner.next();
+                                    opcioClase = scanner.nextInt();
 
-                                System.out.println("Introdueix la ruta del fixer o directori Remot: ");
-                                rutaRemota = scanner.next();
-                                System.out.println("-----------------------------------------------------");
+                                    System.out.println("");
+                                    System.out.println("Introduexi la ruta del directori local: ");
+                                    String directorio = scanner.next();
+                                    String fichero = "";
 
-                                System.out.println("-----------------------------------------------------");
-                                System.out.println("Aquí es es mostrarà el resultat.");
-                                System.out.println("-----------------------------------------------------");
+                                    switch (opcioClase) {
+                                        case 1:
+                                            System.out.println("");
+                                            System.out.println("Introduexi el nom del arxiu dintre del directori local: ");
+                                            fichero = scanner.next();
+                                            break;
+                                        case 2:
+                                            break;
+                                        default:
+                                            System.out.println("Opción no válida");
+                                            break;
+                                    }
+
+                                    Compare compare = new Compare(directorio);
+
+                                    try {
+                                        compare.compare(fichero);
+                                    } catch (Exception e) {
+                                        System.err.println("Error al comparar: " + e.getMessage());
+                                    }
+
+                                    break;
+                                } while (opcioClase != 2);
+
                                 break;
 
                             case 6:
