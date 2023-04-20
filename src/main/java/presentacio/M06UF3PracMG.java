@@ -50,8 +50,7 @@ public class M06UF3PracMG {
             opcio = scanner.nextInt();
 
             switch (opcio) {
-                case 1:
-
+                case 1 -> {
                     do {
                         // Demanem al usuari la classe i la cantitat que vol generar
                         System.out.print(" \n"
@@ -80,13 +79,14 @@ public class M06UF3PracMG {
                                 System.out.println("Exemple: C:\\Users\\Enric\\OneDrive\\Desktop\\Nom_Del_Repo");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-
+                                
                                 Create creator = new Create();
                                 creator.crearRepositori(rutaRemota, nomBD);
-
+                                
                                 System.out.println("S'ha creat amb exit");
                                 System.out.println("-----------------------------------------------------");
-
+                                break;
+                                
                             case 2:
 
                                 //Eliminar repositori remot amb tots els seus documents, si no existeix s'informa a l'usuari
@@ -206,10 +206,9 @@ public class M06UF3PracMG {
                         }
 
                     } while (opcioClase != 7);
+                }
 
-                    break;
-
-                case 2:
+                case 2 -> {
                     System.out.println("-----------------------------------------------------");
                     System.out.println("Se ha selecionado la opcion de clonar");
                     System.out.println("-----------------------------------------------------");
@@ -217,11 +216,8 @@ public class M06UF3PracMG {
                     System.out.println("Introdueix la ruta del directori remot: ");
                     rutaRemota = scanner.next();
                     clonarDirectoriRemot(rutaRemota, nomBD);
-
-                    break;
-                case 3:
-
-                    System.exit(0);
+                }
+                case 3 -> System.exit(0);
             }
 
         } while (opcio != 3);
