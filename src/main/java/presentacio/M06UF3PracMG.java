@@ -83,7 +83,7 @@ public class M06UF3PracMG {
                                 creator.crearRepositori(rutaRemota, nomBD);
                                 
                                 System.out.println("S'ha creat amb exit");
-                                System.out.println("-----------------------------------------------------");*/
+                                System.out.println("-----------------------------------------------------");
 
                             case 2:
 
