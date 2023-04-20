@@ -6,6 +6,7 @@ package presentacio;
 
 import com.mongodb.client.MongoDatabase;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -15,8 +16,9 @@ import static logica.DBConect.conexioMongoDB;
 import logica.Push;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static logica.Drop.eliminarRepositoriRemot;
+import logica.Pull;
 import logica.Compare;
-//import static logica.Drop.eliminarRepositori;
 
 /**
  *
@@ -24,7 +26,7 @@ import logica.Compare;
  */
 public class M06UF3PracMG {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, Exception {
 
         Scanner scanner = new Scanner(System.in);
         Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
@@ -53,8 +55,7 @@ public class M06UF3PracMG {
             opcio = scanner.nextInt();
 
             switch (opcio) {
-                case 1:
-
+                case 1 -> {
                     do {
                         // Demanem al usuari la classe i la cantitat que vol generar
                         System.out.print(" \n"
@@ -83,13 +84,14 @@ public class M06UF3PracMG {
                                 System.out.println("Exemple: C:\\Users\\Enric\\OneDrive\\Desktop\\Nom_Del_Repo");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-
+                                
                                 Create creator = new Create();
                                 creator.crearRepositori(rutaRemota, nomBD);
-
+                                
                                 System.out.println("S'ha creat amb exit");
                                 System.out.println("-----------------------------------------------------");
-
+                                break;
+                                
                             case 2:
 
                                 //Eliminar repositori remot amb tots els seus documents, si no existeix s'informa a l'usuari
@@ -101,7 +103,7 @@ public class M06UF3PracMG {
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
 
-                                //eliminarRepositori(nomBD, rutaRemota);
+                                eliminarRepositoriRemot(nomBD, rutaRemota);
                                 break;
 
                             case 3:
@@ -160,14 +162,44 @@ public class M06UF3PracMG {
                                 System.out.println("S'ha selecionat Pull");
                                 System.out.println("-----------------------------------------------------");
 
-                                System.out.println("Introdueix la ruta del fixer o directori Remot: ");
-                                rutaRemota = scanner.next();
-                                System.out.println("-----------------------------------------------------");
+                                do {
+                                    System.out.print("\n"
+                                            + "---------------------\n"
+                                            + "Selecciona una opció:\n"
+                                            + "---------------------\n"
+                                            + "---------------------\n"
+                                            + "1. Fer Pull d'arxiu dintre del directori.\n"
+                                            + "2. Fer Pull de tot el directori.\n"
+                                            + "---------------------\n");
 
-                                System.out.println("S'ha baixat amb exit");
-                                System.out.println("-----------------------------------------------------");
+                                    opcioClase = scanner.nextInt();
 
+                                    String dirBase = scanner.next();
+                                    String fichero = "";
+
+                                    switch (opcioClase) {
+                                        case 1:
+                                            fichero = scanner.next();
+                                            break;
+                                        case 2:
+                                            break;
+                                    }
+
+                                    Pull pull = new Pull(dirBase);
+
+                                    try {
+                                        Path filePath = Paths.get(dirBase, fichero);
+                                        System.out.println("");
+                                        System.out.println("¿Desea forzar el Pull? Introduzca 'true' o 'false':");
+                                        boolean forzar = scanner.nextBoolean();
+                                        pull.pull(filePath, forzar);
+                                    } catch (Exception e) {
+                                        System.err.println("Error al hacer pull del archivo: " + e.getMessage());
+                                    }
+                                    
+                                } while (opcioClase != 2);
                                 break;
+
 
                             case 5:
                                 System.out.println("-----------------------------------------------------");
@@ -243,22 +275,18 @@ public class M06UF3PracMG {
                         }
 
                     } while (opcioClase != 7);
+                }
 
-                    break;
-
-                case 2:
+                case 2 -> {
                     System.out.println("-----------------------------------------------------");
                     System.out.println("Se ha selecionado la opcion de clonar");
                     System.out.println("-----------------------------------------------------");
 
                     System.out.println("Introdueix la ruta del directori remot: ");
                     rutaRemota = scanner.next();
-                    //clonarDirectoriRemot(rutaRemota, nomBD);
-
-                    break;
-                case 3:
-
-                    System.exit(0);
+                    clonarDirectoriRemot(rutaRemota, nomBD);
+                }
+                case 3 -> System.exit(0);
             }
 
         } while (opcio != 3);
