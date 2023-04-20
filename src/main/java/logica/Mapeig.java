@@ -28,7 +28,7 @@ public class Mapeig {
      */
     public static Document mapToDocument(Fichero fi) {
 
-        Document ret = new Document("ruta", fi.getRuta())
+        Document ret = new Document("_id", fi.getRuta())
                 .append("contenido", fi.getContenido())
                 .append("fechaModificacion", fi.getFechaModificacion())
                 .append("hashMD5", fi.getHashMD5());
@@ -47,7 +47,7 @@ public class Mapeig {
 
         Fichero ret = new Fichero();
 
-        ret.setRuta(d.getString("ruta"));
+        ret.setRuta(d.getString("_id"));
         //ret.setContenido(new StringBuilder(d.getString("contenido")));
         ret.setContenido(d.getString("contenido"));
         //ret.setFechaModificacion(d.getDate("fechaModificacion").toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
