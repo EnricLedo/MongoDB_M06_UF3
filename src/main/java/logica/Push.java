@@ -35,7 +35,7 @@ public class Push {
     public Push(String dirBase) {
         this.dirBase = dirBase;
         MongoClient mongoClient = new MongoClient("localhost", 27017);
-        MongoDatabase database = mongoClient.getDatabase("GETDB");
+        MongoDatabase database = mongoClient.getDatabase("GETBD");
         if (!database.listCollectionNames().into(new ArrayList<String>()).contains(dirBase)) {
             database.createCollection(dirBase);
             System.out.println("");

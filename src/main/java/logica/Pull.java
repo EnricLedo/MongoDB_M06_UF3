@@ -12,6 +12,7 @@ import entidad.Fichero;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import logica.Mapeig;
 import org.bson.Document;
 
 /**
@@ -23,7 +24,7 @@ public class Pull {
     private static MongoCollection<Document> coleccioFichero;
 
     public static void pull(String rutaRemota) {
-        String dirLocal = System.getProperty("user.dir");//Ruta local
+      /*  String dirLocal = System.getProperty("user.dir");//Ruta local
 
         //si existeix la ruta
         if (rutaRemota != null) {
@@ -51,7 +52,7 @@ public class Pull {
                 System.out.println("El contenido del archivo se ha escrito en el archivo local con éxito.");
             } catch (IOException e) {
                 System.err.println("Error al escribir el contenido del archivo en el archivo local: " + e.getMessage());
-            }
         }
+        }*/
     }
 }
