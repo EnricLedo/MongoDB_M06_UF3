@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Fichero {
     
     private LocalDateTime fechaModificacion;
-    private StringBuilder contenido;
+    private String contenido;
     private String ruta;
     private String hashMD5;
 
@@ -28,11 +28,11 @@ public class Fichero {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public StringBuilder getContenido() {
+    public String getContenido() {
         return contenido;
     }
 
-    public void setContenido(StringBuilder contenido) {
+    public void setContenido(String contenido) {
         this.contenido = contenido;
     }
 

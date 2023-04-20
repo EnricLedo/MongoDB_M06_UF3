@@ -5,16 +5,25 @@
  */
 package logica;
 
+import Utils.Utils;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
 import entidad.Fichero;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import org.bson.Document;
 
 /**
@@ -23,67 +32,55 @@ import org.bson.Document;
  */
 public class Pull {
 
-    private static MongoCollection<Document> coleccioFichero;
+    private final String dirBase;
+    private final MongoCollection<Document> collection;
 
-    public static void pull(String dir_base, boolean force) throws IOException {
-        String dirLocal = System.getProperty("user.dir");//Ruta local
-        String remoteDir = dir_base.replace("/", ".");
-
-        // Verificar si la ruta local existe
-        Path localPath = Paths.get(dirLocal, dir_base);
-        if (!Files.exists(localPath)) {
-            System.err.println("Error: El directorio no existe.");
-            return;
+    public Pull(String dirBase) {
+        this.dirBase = dirBase;
+        MongoClientURI clientURI = new MongoClientURI("mongodb://localhost:27017");
+        MongoClient mongoClient = new MongoClient(clientURI);
+        MongoDatabase database = mongoClient.getDatabase("GETDB");
+        if (!database.listCollectionNames().into(new ArrayList<String>()).contains("ficheros")) {
+            database.createCollection("ficheros");
         }
-
-        // Verificar si el archivo local existe
-        Path localFile = Paths.get(dirLocal, dir_base);
-        if (!Files.exists(localFile)) {
-            Files.createDirectories(localFile.getParent());
-            Files.createFile(localFile);
+        this.collection = database.getCollection("ficheros");
+    }
+    
+    public void pull(Path filePath) throws Exception {
+        File file = filePath.toFile();
+        if (!file.exists()) {
+            file.createNewFile();
         }
-
-        // Obtener la fecha de modificación del archivo local
-        long localLastModified = Files.getLastModifiedTime(localFile).toMillis();
-
-        // Obtener el documento del archivo remoto
-        Document doc = coleccioFichero.find(new Document("ruta", remoteDir)).first();
-        Fichero fichero = Mapeig.mapFromDocument(doc);
-        if (fichero == null) {
-            System.err.println("Error: El archivo remoto no existe.");
-            return;
+        if (file.isDirectory()) {
+            pullDirectorio(file);
+        } else {
+            pullFichero(file);
         }
+    }
 
-        // Obtener la fecha de modificación del archivo remoto
-        long remoteLastModified = doc.getDate("dataModificacio").getTime();
-
-        if (!force && localLastModified > remoteLastModified) {
-            System.err.println("Error: El archivo local es más reciente que el remoto.");
-            return;
+    private void pullDirectorio(File dir) throws Exception {
+        List<File> files = Utils.listFiles(dir);
+        for (File file : files) {
+            if (file.isFile()) {
+                pullFichero(file);
+            }
         }
-
-        // Descargar el contenido del archivo remoto
-        StringBuilder contenidoArchivo = fichero.getContenido();
-        // Obtener el contenido del archivo del documento y agregarlo al StringBuilder
-        contenidoArchivo.append(fichero.getContenido());
-
-        //tractem tots els valors amb un cursor
-        MongoCursor<Document> cursorFichero = coleccioFichero.find().cursor();
-
-        //mentre existeixin elements
-        while (cursorFichero.hasNext()) {
-            Document docFile = cursorFichero.next();
-            Fichero f = Mapeig.mapFromDocument(docFile);
-
-            contenidoArchivo.append(f.getContenido());
+    }
+    
+    private void pullFichero(File file) throws Exception {
+        String rutaAbsoluta = file.getAbsolutePath();
+        Document document = collection.find(new Document("ruta", rutaAbsoluta)).first();
+        if (document == null) {
+            throw new Exception("El archivo no existe en el repositorio");
+        } else {
+            Fichero fichero = Mapeig.mapFromDocument(document);
+            try (PrintWriter out = new PrintWriter(file)) {
+                out.println(fichero.getContenido());
+                System.out.println("Archivo descargado: " + rutaAbsoluta);
+            } catch (FileNotFoundException e) {
+                System.err.println("Error al guardar el archivo " + file.getName() + ": " + e.getMessage());
+                return; // termina la función sin hacer nada más
+            }
         }
-
-        // Escriure el contingut del arxiu en un arxiu local
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(dirLocal))) {
-            writer.write(contenidoArchivo.toString());
-            System.out.println("El contenido del archivo se ha escrito en el archivo local con éxito.");
-        } catch (IOException e) {
-            System.err.println("Error al escribir el contenido del archivo en el archivo local: " + e.getMessage());
-        }   
     }
 }
