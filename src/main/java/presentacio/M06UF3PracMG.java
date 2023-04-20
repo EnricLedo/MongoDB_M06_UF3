@@ -21,6 +21,7 @@ public class M06UF3PracMG {
         Scanner scanner = new Scanner(System.in);
         int opcio = 0;
         int opcioClase = 0;
+        String dataTime;
         String database;
         String rutaLocal = "";
         String rutaRemota = "";
@@ -73,12 +74,12 @@ public class M06UF3PracMG {
                                 System.out.println("Introdueix la ruta del fixer o directori a Crear: ");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-                                
+
                                 System.out.println("S'ha creat amb exit");
                                 System.out.println("-----------------------------------------------------");
 
                             case 2:
-                                
+
                                 //Eliminar repositori remot amb tots els seus documents, si no existeix s'informa a l'usuari
                                 
                                 System.out.println("-----------------------------------------------------");
@@ -90,7 +91,7 @@ public class M06UF3PracMG {
                                 System.out.println("-----------------------------------------------------");
 
                                 eliminarRepositori(nomBD, rutaRemota);
-                                
+
                                 break;
 
                             case 3:
@@ -172,7 +173,11 @@ public class M06UF3PracMG {
 
                     System.out.println("Introdueix la ruta del directori remot: ");
                     rutaRemota = scanner.next();
-                    clonarDirectoriRemot(rutaRemota, nomBD);
+
+                    System.out.println("Introdueix la data (DDMMAAAA) de modificació per extreure els fitxers desde la data introduida: ");
+                    dataTime = scanner.next();
+
+                    clonarDirectoriRemot(rutaRemota, nomBD, dataTime);
 
                     break;
                 case 3:
