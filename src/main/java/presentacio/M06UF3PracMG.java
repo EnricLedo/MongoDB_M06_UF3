@@ -77,7 +77,8 @@ public class M06UF3PracMG {
                                 System.out.println("-----------------------------------------------------");
                                 
                                 Create creator = new Create();
-                                creator.crearRepositori(rutaRemota, database);
+                                creator.crearRepositori(rutaRemota, nomBD);
+                                
                                 System.out.println("S'ha creat amb exit");
                                 System.out.println("-----------------------------------------------------");
 
@@ -93,7 +94,7 @@ public class M06UF3PracMG {
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
 
-                                eliminarRepositori(nomBD, rutaRemota);
+                                //eliminarRepositori(nomBD, rutaRemota);
                                 
                                 break;
 

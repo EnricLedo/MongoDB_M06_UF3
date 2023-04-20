@@ -20,72 +20,40 @@ import java.util.List;
  */
 public class Create {
     
-    public void crearRepositori(String ruta, MongoDatabase database) throws IOException{
+    public void crearRepositori(String ruta, MongoDatabase database){
         
         //Agafem el nom del repositori 
         String[] partsRuta = ruta.split("\\\\");
-        String nom_repo = partsRuta[partsRuta.length-1];
         
         List<String> nomsRepositoris = database.listCollectionNames().into(new ArrayList<>());
         
+        //c:\home\\user\getrepo2 = home_user_getrepo2
+        String nom_repo = "";
+            for (int i = 0; i < partsRuta.length; i++) {
+                nom_repo+=partsRuta[i]+"_";
+            }
+            for (int i = 0; i < nom_repo.length(); i++) {
+                if(nom_repo.charAt(i) != '_')
+                {
+                    nom_repo = nom_repo.substring(1);
+                    i--;
+                }
+                else{
+                    nom_repo = nom_repo.substring(1);
+                    break;
+                }
+            }
+            if (nom_repo.endsWith("_")) {
+                nom_repo = nom_repo.substring(0, nom_repo.length() - 1);
+            }
         //Si el repositorni no existeix, el creem
         if(!nomsRepositoris.contains(nom_repo)){
+            
             database.createCollection(nom_repo);
         }
         //Si existeix, informem a l'usuari
         else{
             System.out.println("El repositori que intentes crear ja existeix.");
         }
-        
-        /*
-        Així és com hauria de quedar el Main
-        System.out.println("-----------------------------------------------------");
-                                System.out.println("S'ha selecionat Create");
-                                System.out.println("-----------------------------------------------------");
-
-                                System.out.println("Introdueix la ruta del repositori a Crear: ");
-                                System.out.println("Exemple: C:\\Users\\Enric\\OneDrive\\Desktop\\Nom_Del_Repo");
-                                rutaRemota = scanner.next();
-                                System.out.println("-----------------------------------------------------");
-                                
-                                Create creator = new Create();
-                                creator.crearRepositori(rutaRemota, database);
-                                System.out.println("S'ha creat amb exit");
-                                System.out.println("-----------------------------------------------------");
-        */
-        
-        /*
-        //Mirem si hi ha un repositori a la ruta especificada
-        File f = new File(ruta);
-        if(!f.exists()){
-            System.out.println("No hi ha cap document en la ruta especificada");
-        }
-        else{
-            //Busquem tots els noms de documents que hi hagi per penjar-los
-            Files.walk(Paths.get(ruta)).forEach(r-> {
-                if (Files.isRegularFile(r)) {
-                    //Per a cada fitxer he l'he de convertir a Document i pujar-lo
-                    System.out.println(r);
-                }
-            });
-        }
-        
-        database.createCollection("mycollection");
-        try {
-            String ruta = "/ruta/filename.txt";
-            String contenido = "Contenido de ejemplo";
-            File file = new File(ruta);
-            // Si el archivo no existe es creado
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileWriter fw = new FileWriter(file);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(contenido);
-            bw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
     }
 }
