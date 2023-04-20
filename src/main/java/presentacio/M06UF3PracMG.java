@@ -73,12 +73,16 @@ public class M06UF3PracMG {
                                 System.out.println("S'ha selecionat Create");
                                 System.out.println("-----------------------------------------------------");
 
-                                System.out.println("Introdueix la ruta del fixer o directori a Crear: ");
+                             /*   System.out.println("Introdueix la ruta del repositori a Crear: ");
+                                System.out.println("Exemple: C:\\Users\\Enric\\OneDrive\\Desktop\\Nom_Del_Repo");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-
+                                
+                                Create creator = new Create();
+                                creator.crearRepositori(rutaRemota, nomBD);
+                                
                                 System.out.println("S'ha creat amb exit");
-                                System.out.println("-----------------------------------------------------");
+                                System.out.println("-----------------------------------------------------");*/
 
                             case 2:
 
@@ -90,8 +94,6 @@ public class M06UF3PracMG {
                                 System.out.println("Introdueix la ruta del repositori Remot: ");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-                                
-                               // eliminarRepositori(nomBD, rutaRemota);
 
                                 //eliminarRepositori(nomBD, rutaRemota);
                                 break;
