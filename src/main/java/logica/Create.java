@@ -4,12 +4,15 @@
  */
 package logica;
 
+import com.mongodb.client.MongoDatabase;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,38 +20,40 @@ import java.nio.file.Paths;
  */
 public class Create {
     
-    public void crearRepositori(String ruta) throws IOException{
+    public void crearRepositori(String ruta, MongoDatabase database){
         
-        //Mirem si hi ha un directori a la ruta especificada
-        File f = new File(ruta);
-        if(!f.exists()){
-            System.out.println("No hi ha cap document en la ruta especificada");
-        }
-        else{
-            //Busquem tots els noms de documents que hi hagi per penjar-los
-            Files.walk(Paths.get(ruta)).forEach(r-> {
-                if (Files.isRegularFile(r)) {
-                    //Per a cada fitxer he l'he de convertir a Document i pujar-lo
-                    System.out.println(r);
-                }
-            });
-        }
+        //Agafem el nom del repositori 
+        String[] partsRuta = ruta.split("\\\\");
         
+        List<String> nomsRepositoris = database.listCollectionNames().into(new ArrayList<>());
         
-        try {
-            String ruta = "/ruta/filename.txt";
-            String contenido = "Contenido de ejemplo";
-            File file = new File(ruta);
-            // Si el archivo no existe es creado
-            if (!file.exists()) {
-                file.createNewFile();
+        //c:\home\\user\getrepo2 = home_user_getrepo2
+        String nom_repo = "";
+            for (int i = 0; i < partsRuta.length; i++) {
+                nom_repo+=partsRuta[i]+"_";
             }
-            FileWriter fw = new FileWriter(file);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(contenido);
-            bw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            for (int i = 0; i < nom_repo.length(); i++) {
+                if(nom_repo.charAt(i) != '_')
+                {
+                    nom_repo = nom_repo.substring(1);
+                    i--;
+                }
+                else{
+                    nom_repo = nom_repo.substring(1);
+                    break;
+                }
+            }
+            if (nom_repo.endsWith("_")) {
+                nom_repo = nom_repo.substring(0, nom_repo.length() - 1);
+            }
+        //Si el repositorni no existeix, el creem
+        if(!nomsRepositoris.contains(nom_repo)){
+            
+            database.createCollection(nom_repo);
+        }
+        //Si existeix, informem a l'usuari
+        else{
+            System.out.println("El repositori que intentes crear ja existeix.");
         }
     }
 }
