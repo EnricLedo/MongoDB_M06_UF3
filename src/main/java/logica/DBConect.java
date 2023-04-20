@@ -21,7 +21,7 @@ public class DBConect {
         MongoClient mongoClient = new MongoClient("localhost", 27017);
 
         MongoDatabase database = mongoClient.getDatabase("GETBD");
-        System.out.println("S'ha conectat amb la BD correctament!");
+        //System.out.println("S'ha conectat amb la BD correctament!");
 
         return database;
     }
