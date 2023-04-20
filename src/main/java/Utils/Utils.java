@@ -16,27 +16,18 @@ import java.util.List;
  */
 public class Utils {
     
-    public static String getRelativePath(File file, File baseDir) {
-        String path = file.getAbsolutePath();
-        String basePath = baseDir.getAbsolutePath();
-        if (path.startsWith(basePath)) {
-            return path.substring(basePath.length() + 1);
-        }
-        return path;
-    }
-
-    public static List<File> listFiles(File dir) {
-        List<File> files = new ArrayList<>();
-        File[] filesArray = dir.listFiles();
-        if (filesArray != null) {
-            files.addAll(Arrays.asList(filesArray));
-            for (File file : filesArray) {
-                if (file.isDirectory()) {
-                    files.addAll(listFiles(file));
+    public static List<File> listFiles(File directorio) {
+        List<File> arxius = new ArrayList<>();
+        File[] ArrayArxius = directorio.listFiles();
+        if (ArrayArxius != null) {
+            arxius.addAll(Arrays.asList(ArrayArxius));
+            for (File arxiu : ArrayArxius) {
+                if (arxiu.isDirectory()) {
+                    arxius.addAll(listFiles(arxiu));
                 }
             }
         }
-        return files;
+        return arxius;
     }
     
     public static ZoneId getZoneId() {
