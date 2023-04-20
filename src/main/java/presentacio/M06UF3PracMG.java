@@ -10,12 +10,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import static logica.Clone.clonarDirectoriRemot;
+import logica.Create;
 import static logica.DBConect.conexioMongoDB;
 import logica.Push;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static logica.Drop.eliminarRepositoriRemot;
 import logica.Pull;
-//import static logica.Drop.eliminarRepositori;
 
 /**
  *
@@ -33,7 +34,7 @@ public class M06UF3PracMG {
         String rutaLocal = "";
         String rutaRemota = "";
 
-        //MongoDatabase nomBD = conexioMongoDB();
+        MongoDatabase nomBD = conexioMongoDB();
         do {
             System.out.println(" \n"
                     + "**********************\n"
@@ -51,8 +52,7 @@ public class M06UF3PracMG {
             opcio = scanner.nextInt();
 
             switch (opcio) {
-                case 1:
-
+                case 1 -> {
                     do {
                         // Demanem al usuari la classe i la cantitat que vol generar
                         System.out.print(" \n"
@@ -77,13 +77,18 @@ public class M06UF3PracMG {
                                 System.out.println("S'ha selecionat Create");
                                 System.out.println("-----------------------------------------------------");
 
-                                System.out.println("Introdueix la ruta del fixer o directori a Crear: ");
+                                System.out.println("Introdueix la ruta del repositori a Crear: ");
+                                System.out.println("Exemple: C:\\Users\\Enric\\OneDrive\\Desktop\\Nom_Del_Repo");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
-
+                                
+                                Create creator = new Create();
+                                creator.crearRepositori(rutaRemota, nomBD);
+                                
                                 System.out.println("S'ha creat amb exit");
                                 System.out.println("-----------------------------------------------------");
-
+                                break;
+                                
                             case 2:
 
                                 //Eliminar repositori remot amb tots els seus documents, si no existeix s'informa a l'usuari
@@ -95,20 +100,13 @@ public class M06UF3PracMG {
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
 
-                                //eliminarRepositori(nomBD, rutaRemota);
+                                eliminarRepositoriRemot(nomBD, rutaRemota);
                                 break;
 
                             case 3:
                                 System.out.println("-----------------------------------------------------");
                                 System.out.println("S'ha selecionat Push");
                                 System.out.println("-----------------------------------------------------");
-
-                                /*System.out.println("Introdueix la ruta del fixer o directori Remot: ");
-                                rutaRemota = scanner.next();
-                                System.out.println("-----------------------------------------------------");
-
-                                System.out.println("S'ha pujat amb exit");
-                                System.out.println("-----------------------------------------------------");*/
                                 do {
                                     System.out.print("\n"
                                             + "---------------------\n"
@@ -120,7 +118,7 @@ public class M06UF3PracMG {
                                             + "---------------------\n");
 
                                     opcioClase = scanner.nextInt();
-                                    
+
                                     System.out.println("");
                                     System.out.println("Introduexi la ruta del directori local: ");
                                     String dirBase = scanner.next();
@@ -147,9 +145,9 @@ public class M06UF3PracMG {
                                     } catch (Exception e) {
                                         System.err.println("Error al hacer push del archivo: " + e.getMessage());
                                     }
-                                    
+
                                 } while (opcioClase != 2);
-                                
+
                                 break;
                             case 4:
                                 System.out.println("-----------------------------------------------------");
@@ -240,22 +238,18 @@ public class M06UF3PracMG {
                         }
 
                     } while (opcioClase != 7);
+                }
 
-                    break;
-
-                case 2:
+                case 2 -> {
                     System.out.println("-----------------------------------------------------");
                     System.out.println("Se ha selecionado la opcion de clonar");
                     System.out.println("-----------------------------------------------------");
 
                     System.out.println("Introdueix la ruta del directori remot: ");
                     rutaRemota = scanner.next();
-                    //clonarDirectoriRemot(rutaRemota, nomBD);
-
-                    break;
-                case 3:
-
-                    System.exit(0);
+                    clonarDirectoriRemot(rutaRemota, nomBD);
+                }
+                case 3 -> System.exit(0);
             }
 
         } while (opcio != 3);
