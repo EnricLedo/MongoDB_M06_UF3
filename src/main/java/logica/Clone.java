@@ -1,61 +1,47 @@
 package logica;
 
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import entidad.Fichero;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import logica.Mapeig;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bson.Document;
 
 public class Clone {
 
-    public static void clonarDirectoriRemot(String nomColeccio, MongoDatabase database, String dataTime) {
-        //Obtener la colección
+    public static void clonarDirectoriRemot(String nomColeccio, MongoDatabase database) {
+
+        // Obtener la colección
         MongoCollection<Document> col = database.getCollection(nomColeccio);
 
-        //Crear la carpeta de destino
-        String destFolder = System.getProperty("user.home") + "/Desktop/" + nomColeccio;
-        File folder = new File(destFolder);
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
-
-        //Obtener los documentos de la colección
-        FindIterable<Document> iterDoc = col.find();
-        MongoCursor<Document> cursor = iterDoc.iterator();
-        try {
+        // Iterar sobre los documentos de la colección
+        try ( MongoCursor<Document> cursor = col.find().iterator()) {
             while (cursor.hasNext()) {
                 Document doc = cursor.next();
-
-                //Mapear el documento a un objeto Fichero
                 Fichero fichero = Mapeig.mapFromDocument(doc);
 
-                //Crear el archivo en la carpeta de destino
-                Path filePath = Paths.get(destFolder, fichero.getRuta());
-                Files.createDirectories(filePath.getParent());
-                FileWriter writer = new FileWriter(filePath.toFile());
+                // Obtener la ruta del fichero
+                String ruta = fichero.getRuta();
 
-                //Escribir el contenido del archivo
-                String contenido = fichero.getContenido();
-                if (contenido != null) {
-                    byte[] decodedBytes = Base64.getDecoder().decode(contenido);
-                    writer.write(new String(decodedBytes));
+                // Crear el directorio de destino
+                File dirDest = new File(ruta).getParentFile();
+                if (!dirDest.exists()) {
+                    dirDest.mkdirs();
                 }
-                writer.close();
+
+                // Escribir el contenido del fichero en el archivo de destino
+                try ( FileWriter fw = new FileWriter(ruta);  BufferedWriter bw = new BufferedWriter(fw)) {
+                    bw.write(fichero.getContenido());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (IOException ex) {
-            Logger.getLogger(Clone.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            cursor.close();
         }
     }
 }

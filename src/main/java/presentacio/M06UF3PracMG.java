@@ -220,7 +220,7 @@ public class M06UF3PracMG {
                     System.out.println("Introdueix la data (DDMMAAAA) de modificació per extreure els fitxers desde la data introduida: ");
                     dataTime = scanner.next();
 
-                    clonarDirectoriRemot(rutaRemota, nomBD, dataTime);
+                    clonarDirectoriRemot(rutaRemota, nomBD);
 
                     break;
                 case 3:
