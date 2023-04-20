@@ -7,6 +7,7 @@ package presentacio;
 import com.mongodb.client.MongoDatabase;
 import java.util.Scanner;
 import static logica.Clone.clonarDirectoriRemot;
+import logica.Create;
 import static logica.DBConect.conexioMongoDB;
 import static logica.Drop.eliminarRepositori;
 
@@ -70,10 +71,13 @@ public class M06UF3PracMG {
                                 System.out.println("S'ha selecionat Create");
                                 System.out.println("-----------------------------------------------------");
 
-                                System.out.println("Introdueix la ruta del fixer o directori a Crear: ");
+                                System.out.println("Introdueix la ruta del repositori a Crear: ");
+                                System.out.println("Exemple: C:\\Users\\Enric\\OneDrive\\Desktop\\Nom_Del_Repo");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
                                 
+                                Create creator = new Create();
+                                creator.crearRepositori(rutaRemota, database);
                                 System.out.println("S'ha creat amb exit");
                                 System.out.println("-----------------------------------------------------");
 
