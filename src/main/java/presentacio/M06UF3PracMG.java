@@ -105,13 +105,6 @@ public class M06UF3PracMG {
                                 System.out.println("-----------------------------------------------------");
                                 System.out.println("S'ha selecionat Push");
                                 System.out.println("-----------------------------------------------------");
-
-                                /*System.out.println("Introdueix la ruta del fixer o directori Remot: ");
-                                rutaRemota = scanner.next();
-                                System.out.println("-----------------------------------------------------");
-
-                                System.out.println("S'ha pujat amb exit");
-                                System.out.println("-----------------------------------------------------");*/
                                 do {
                                     System.out.print("\n"
                                             + "---------------------\n"
@@ -134,7 +127,7 @@ public class M06UF3PracMG {
                                             System.out.println("");
                                             System.out.println("Introduexi el nom del arxiu dintre del directori local: ");
                                             fichero = scanner.next();
-                                            break;
+                                            
                                         case 2:
                                             break;
                                     }
