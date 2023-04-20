@@ -2,65 +2,88 @@ package logica;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import entidad.Fichero;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.bson.Document;
 
 public class Clone {
 
-    public static void clonarDirectoriRemot(String rutaColeccio, MongoDatabase database) {
+    public static void clonarDirectoriRemot(String nomColeccio, MongoDatabase database, String dataTime) {
 
-        //Obtener coleccion
-        MongoCollection<Document> coleccio = database.getCollection(rutaColeccio);
+        MongoCollection<Document> coleccion = database.getCollection(nomColeccio);
 
-        // Crear directorio en el escritorio
-        String rutaDirectorio = System.getProperty("user.home") + "/Desktop/" + rutaColeccio;
-        new File(rutaDirectorio).mkdirs();
+        // Crear directori en l'escriptori
+        String rutaDirectori = System.getProperty("user.home") + "/Desktop/" + nomColeccio;
+        new File(rutaDirectori).mkdirs();
 
-        // Iterar sobre los documentos de la colección
-        for (Document documento : coleccio.find()) {
-            // Obtener la extensión del archivo original
-            String nombreArchivo = documento.getString("nombreArchivo");
-            String extension = nombreArchivo.substring(nombreArchivo.lastIndexOf(".") + 1).toLowerCase();
+        // Iterar sobre els documents de la colecció
+        for (Document doc : coleccion.find()) {
 
-            // Determinar la extensión del archivo de destino y el tipo de contenido
-            String extensionDestino = "";
-            String tipoContenido = "";
-            switch (extension) {
+            // Mapejar el document a un objete Fitxer
+            Fichero fichero = Mapeig.mapFromDocument(doc);
+
+            // si dataTime no és null i té format de data en string "DDMMAAAA"
+            // aquesta expressió regular és una cadena de text que representa un patró de coincidència
+            // \\d representa un dígit
+            // {2} significa que es requereixen exactament 2 dígits consecutius
+            // {4} significa que es requereixen exactament 4 dígits consecutius
+            if (dataTime != null && dataTime.matches("\\d{2}\\d{2}\\d{4}")) {
+                String dataString = dataTime.substring(0, 2) + "/" + dataTime.substring(2, 4) + "/" + dataTime.substring(4);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDateTime dataLimit = LocalDateTime.parse(dataString, formatter);
+
+                if (fichero.getFechaModificacion().isBefore(dataLimit)) {
+                    continue;
+                }
+            }
+
+            // Determinar l'extensió de l'arxiu
+            String nomArxiu = fichero.getRuta().substring(fichero.getRuta().lastIndexOf("/") + 1);
+            String extensio = "";
+            if (nomArxiu != null) {
+                extensio = nomArxiu.substring(nomArxiu.lastIndexOf(".") + 1).toLowerCase();
+            } else {
+                System.out.println("No hi ha ningun arxiu que clonar");
+            }
+
+            // Determinar l'extensio de l'arxiu de desti i el tipus de contingut
+            String extensioDesti = "";
+            String tipusContingut = "";
+            switch (extensio) {
                 case "java":
-                    extensionDestino = "java";
-                    tipoContenido = documento.getString("contenido");
+                    extensioDesti = "java";
+                    tipusContingut = fichero.getContenido().toString();
                     break;
                 case "html":
-                    extensionDestino = "html";
-                    tipoContenido = documento.getString("contenidoHtml");
+                    extensioDesti = "html";
+                    tipusContingut = fichero.getContenido().toString();
                     break;
                 case "xml":
-                    extensionDestino = "xml";
-                    tipoContenido = documento.getString("contenidoXml");
+                    extensioDesti = "xml";
+                    tipusContingut = fichero.getContenido().toString();
                     break;
                 case "txt":
-                    extensionDestino = "txt";
-                    tipoContenido = documento.getString("contenidoTxt");
+                    extensioDesti = "txt";
+                    tipusContingut = fichero.getContenido().toString();
                     break;
                 default:
-                    // Si la extensión no está soportada, saltar este documento
                     continue;
             }
 
-            // Escribir el contenido en un archivo dentro de la carpeta
-            String rutaArchivo = rutaDirectorio + "/" + documento.getObjectId("_id").toString() + "." + extensionDestino;
+            // Escriure el contingut 
+            String rutaArxiu = rutaDirectori + "/" + doc.getObjectId("_id").toString() + "." + extensioDesti;
             try {
-                BufferedWriter escritor = new BufferedWriter(new FileWriter(rutaArchivo));
-                escritor.write(tipoContenido);
+                BufferedWriter escritor = new BufferedWriter(new FileWriter(rutaArxiu));
+                escritor.write(tipusContingut);
                 escritor.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
     }
-
 }
