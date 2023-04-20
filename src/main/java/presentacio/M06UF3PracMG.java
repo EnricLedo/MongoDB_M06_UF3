@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import static logica.Clone.clonarDirectoriRemot;
+import logica.Create;
 import static logica.DBConect.conexioMongoDB;
 import logica.Push;
 //import static logica.Drop.eliminarRepositori;
@@ -73,7 +74,7 @@ public class M06UF3PracMG {
                                 System.out.println("S'ha selecionat Create");
                                 System.out.println("-----------------------------------------------------");
 
-                             /*   System.out.println("Introdueix la ruta del repositori a Crear: ");
+                                System.out.println("Introdueix la ruta del repositori a Crear: ");
                                 System.out.println("Exemple: C:\\Users\\Enric\\OneDrive\\Desktop\\Nom_Del_Repo");
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
