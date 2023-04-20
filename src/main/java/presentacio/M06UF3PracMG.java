@@ -23,7 +23,7 @@ import logica.Pull;
  */
 public class M06UF3PracMG {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, Exception {
 
         Scanner scanner = new Scanner(System.in);
         Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
@@ -183,7 +183,10 @@ public class M06UF3PracMG {
 
                                     try {
                                         Path filePath = Paths.get(dirBase, fichero);
-                                        pull.pull(filePath);
+                                        System.out.println("");
+                                        System.out.println("¿Desea forzar el Pull? Introduzca 'true' o 'false':");
+                                        boolean forzar = scanner.nextBoolean();
+                                        pull.pull(filePath, forzar);
                                     } catch (Exception e) {
                                         System.err.println("Error al hacer pull del archivo: " + e.getMessage());
                                     }
