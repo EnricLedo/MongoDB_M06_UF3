@@ -49,9 +49,18 @@ public class Create {
         //Si el repositorni no existeix, el creem
         if(!nomsRepositoris.contains(nom_repo)){
             
-            database.createCollection(nom_repo);
-        }
-        //Si existeix, informem a l'usuari
+            //Per a crearlo hem de asegurar-nos que existeix una carpeta en la direcció "ruta"
+            //Si existeix la carpeta el creem
+            File file = new File(ruta);
+            if (file.exists()) {
+                database.createCollection(nom_repo);
+            }
+            //Si no existeix cap fitxer, no el creem
+            else{
+                System.out.println("No hi ha cap repositori amb aquest nom, pero no hi ha cap fitxer en la ruta especificada");
+            }
+        }   
+        //Si el repositori existeix, informem a l'usuari
         else{
             System.out.println("El repositori que intentes crear ja existeix.");
         }
