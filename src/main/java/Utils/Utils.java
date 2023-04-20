@@ -24,7 +24,7 @@ public class Utils {
         }
         return path;
     }
-    
+
     public static List<File> listFiles(File dir) {
         List<File> files = new ArrayList<>();
         File[] filesArray = dir.listFiles();
