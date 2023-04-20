@@ -127,7 +127,7 @@ public class M06UF3PracMG {
                                             System.out.println("");
                                             System.out.println("Introduexi el nom del arxiu dintre del directori local: ");
                                             fichero = scanner.next();
-                                            
+                                            break;
                                         case 2:
                                             break;
                                     }
