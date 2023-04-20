@@ -16,15 +16,6 @@ import java.util.List;
  */
 public class Utils {
     
-    public static String getRelativePath(File file, File baseDir) {
-        String path = file.getAbsolutePath();
-        String basePath = baseDir.getAbsolutePath();
-        if (path.startsWith(basePath)) {
-            return path.substring(basePath.length() + 1);
-        }
-        return path;
-    }
-    
     public static List<File> listFiles(File dir) {
         List<File> files = new ArrayList<>();
         File[] filesArray = dir.listFiles();
