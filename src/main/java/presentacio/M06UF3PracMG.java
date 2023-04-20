@@ -14,7 +14,7 @@ import static logica.DBConect.conexioMongoDB;
 import logica.Push;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import static logica.Drop.eliminarRepositori;
+import static logica.Drop.eliminarRepositoriRemot;
 
 /**
  *
@@ -98,7 +98,7 @@ public class M06UF3PracMG {
                                 rutaRemota = scanner.next();
                                 System.out.println("-----------------------------------------------------");
 
-                                //eliminarRepositori(nomBD, rutaRemota);
+                                eliminarRepositoriRemot(nomBD, rutaRemota);
                                 break;
 
                             case 3:
