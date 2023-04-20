@@ -11,14 +11,34 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 import org.bson.Document;
 
 public class Clone {
 
     public static void clonarDirectoriRemot(String nomColeccio, MongoDatabase database) {
 
-        // Obtener la colección
+        // Obtenir la colección
         MongoCollection<Document> col = database.getCollection(nomColeccio);
+
+        // Obtener fecha límite de modificación
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate fechaLimite = null;
+        boolean fechaValida = false;
+        while (!fechaValida) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Introdueix la data límit de modificació (dd/MM/yyyy): ");
+            String fechaStr = scanner.next();
+            try {
+                fechaLimite = LocalDate.parse(fechaStr, formatter);
+                fechaValida = true;
+            } catch (Exception e) {
+                System.out.println("Data introduïda no vàlida. Torna-ho a intentar.");
+            }
+        }
 
         // Iterar sobre los documentos de la colección
         try ( MongoCursor<Document> cursor = col.find().iterator()) {
@@ -26,20 +46,26 @@ public class Clone {
                 Document doc = cursor.next();
                 Fichero fichero = Mapeig.mapFromDocument(doc);
 
-                // Obtener la ruta del fichero
-                String ruta = fichero.getRuta();
+                // Obtener la fecha de modificación del fichero
+                LocalDateTime fechaModificacion = fichero.getFechaModificacion();
 
-                // Crear el directorio de destino
-                File dirDest = new File(ruta).getParentFile();
-                if (!dirDest.exists()) {
-                    dirDest.mkdirs();
-                }
+                // Comprobar si el fichero fue modificado antes de la fecha límite
+                if (fechaModificacion.toLocalDate().isBefore(fechaLimite)) {
+                    // Obtener la ruta del fichero
+                    String ruta = fichero.getRuta();
 
-                // Escribir el contenido del fichero en el archivo de destino
-                try ( FileWriter fw = new FileWriter(ruta);  BufferedWriter bw = new BufferedWriter(fw)) {
-                    bw.write(fichero.getContenido());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    // Crear el directorio de destino
+                    File dirDest = new File(ruta).getParentFile();
+                    if (!dirDest.exists()) {
+                        dirDest.mkdirs();
+                    }
+
+                    // Escribir el contenido del fichero en el archivo de destino
+                    try ( FileWriter fw = new FileWriter(ruta);  BufferedWriter bw = new BufferedWriter(fw)) {
+                        bw.write(fichero.getContenido());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
