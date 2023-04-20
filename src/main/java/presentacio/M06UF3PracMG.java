@@ -28,7 +28,6 @@ public class M06UF3PracMG {
         Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
         int opcio = 0;
         int opcioClase = 0;
-        String dataTime;
         String database;
         String rutaLocal = "";
         String rutaRemota = "";
@@ -217,10 +216,6 @@ public class M06UF3PracMG {
 
                     System.out.println("Introdueix la ruta del directori remot: ");
                     rutaRemota = scanner.next();
-
-                    System.out.println("Introdueix la data (DDMMAAAA) de modificació per extreure els fitxers desde la data introduida: ");
-                    dataTime = scanner.next();
-
                     clonarDirectoriRemot(rutaRemota, nomBD);
 
                     break;
